@@ -105,8 +105,8 @@ PanoramaView {
     SerialSensor {
         id: serialSensor
         active: true
-        portName: "ttyUSB0"
-        //portName: "ttyAMA0"
+        //portName: "ttyUSB0"
+        portName: "ttyAMA0"
         enableCompass: configReceiver.enableCompass
         adjustAngle: configReceiver.adjustAngle
         smoothingFactor: configReceiver.smoothingFactor
