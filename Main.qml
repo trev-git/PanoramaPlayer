@@ -74,10 +74,10 @@ PanoramaView {
         onMediaStateChanged: {
             if (mediaState === PanoramaPlayer.MediaReady) {
                 idleTimer.stop()
-                systemProcess.startCommand(runIdleCommand + " 1")
+                // systemProcess.startCommand(runIdleCommand + " 1")
                 play()
             } else if (mediaState === PanoramaPlayer.MediaUnknown && runIdleCommand) {
-                systemProcess.startCommand(runIdleCommand + " 0")
+                // systemProcess.startCommand(runIdleCommand + " 0")
                 stop()
             }
         }
