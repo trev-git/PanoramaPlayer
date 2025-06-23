@@ -1,16 +1,17 @@
 #include <cmath>
 #include <algorithm>
+#include <type_traits>
 #include "Lerp.h"
 
-#define M_2PI 6.283185307179586
+constexpr qreal twopi = 2 * M_PI;
 
+template <typename T, std::is_floating_point<T>>
 qreal repeat(qreal t, qreal length)
 {
     return std::clamp(t - std::floor(t / length) * length, 0.0, length);
 }
 
-template <typename T>
-T clamp01(T a)
+qreal clamp01(qreal a)
 {
     if (a > 1.0) return 1.0;
     if (a < 0.0) return 0.0;

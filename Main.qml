@@ -9,7 +9,7 @@ PanoramaView {
     debugOpenGL: appDebugOpenGL
 
     readonly property string runIdleCommand: "backlight"
-    readonly property int pitchIdleAngle: 50
+    readonly property int pitchIdleAngle: 30
 
     readonly property string cmdFullPath: StandardPaths.findExecutable(runIdleCommand).toString()
     readonly property var appWindow: Window.window
