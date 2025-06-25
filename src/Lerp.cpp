@@ -1,6 +1,5 @@
 #include <cmath>
 #include <algorithm>
-#include <type_traits>
 #include "Lerp.h"
 
 constexpr qreal twopi = 2 * M_PI;
