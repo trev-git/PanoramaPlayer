@@ -5,7 +5,6 @@
 
 constexpr qreal twopi = 2 * M_PI;
 
-template <typename T, std::is_floating_point<T>>
 qreal repeat(qreal t, qreal length)
 {
     return std::clamp(t - std::floor(t / length) * length, 0.0, length);
