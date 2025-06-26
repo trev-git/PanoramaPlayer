@@ -36,6 +36,7 @@ if ($_POST['type']==2) //Сохранение параметров
 	if (intval($screensaver)==0) $screensaver=1;
 	file_put_contents(dirname(__FILE__).'/screensaver.txt',$screensaver);
 	file_put_contents(dirname(__FILE__).'/smoothing.txt',trim($_POST['smoothing']));
+	file_put_contents(dirname(__FILE__).'/pitch_idle_angle.txt',trim($_POST['pitch_idle_angle']));
 
 	$res['errors']='<span style="color:green;">Сохранено</span>';
 	echo json_encode($res);

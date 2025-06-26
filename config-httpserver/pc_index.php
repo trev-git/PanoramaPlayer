@@ -40,6 +40,7 @@ if ($_SESSION['auth']==true)
 	$current_video=file_get_contents(dirname(__FILE__).'/current_video.txt');
     $screensaver=file_get_contents(dirname(__FILE__).'/screensaver.txt');
 	$smoothing=file_get_contents(dirname(__FILE__).'/smoothing.txt');
+	$pitch_idle_angle=file_get_contents(dirname(__FILE__).'/pitch_idle_angle.txt');
 
 	echo'
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
@@ -159,6 +160,12 @@ if ($_SESSION['auth']==true)
 							<input type="number" min="0" max="1" class="input w_100 smoothing" placeholder="Фактор сглаживания" value="'.$smoothing.'" step="0.01">
 						</div>
 					</div>
+					<div class="m_4"><b>Угол бездействия</b></div>
+					<div class="m_5">
+						<div class="m_5">
+							<input type="number" min="-90" max="90" class="input w_100 pitch_idle_angle" placeholder="Угол бездействия" value="'.$pitch_idle_angle.'" step="1">
+						</div>
+					</div>
 					<div class="m_4 btn_2 w_100 save">Сохранить</div>
 					<div class="m_4 ta_c info"></div>
 				</div>
@@ -212,8 +219,9 @@ $(".save").live("click",function(){
 	var compass=$(".compass").val();
 	var screensaver=$(".screensaver").val();
 	var smoothing=$(".smoothing").val();
+	var pitch_idle_angle=$(".pitch_idle_angle").val();
 
-	$.post("/data.php", {"type":type,"rotate":rotate,"compass":compass,"screensaver":screensaver,"smoothing":smoothing}, function(show){
+	$.post("/data.php", {"type":type,"rotate":rotate,"compass":compass,"screensaver":screensaver,"smoothing":smoothing,"pitch_idle_angle":pitch_idle_angle}, function(show){
 		if (show.errors)
 		{
 			$(".info").show();
