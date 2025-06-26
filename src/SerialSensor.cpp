@@ -555,8 +555,8 @@ void SerialSensor::unpackData(const quint8 *buf, int size)
         tmpZ = short((short(buf[len + 1]) << 8) | buf[len]) * scaleAngle; len += 2;
         //qDebug() << "\tangleZ:" << tmpZ; // Euler angles z
 
-        qreal pitch = roundTo2(qBound(-90.0, -tmpY, 90.0));
-        qreal yaw = roundTo2(qBound(-180.0, -tmpZ, 180.0));
+        qreal pitch = roundTo2(qBound(-90.0, tmpY, 90.0));
+        qreal yaw = roundTo2(qBound(-180.0, tmpZ, 180.0));
 
         bool pitch_changed = (pitch != m_pitchAngle);
         if (pitch_changed)
