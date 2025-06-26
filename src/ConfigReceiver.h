@@ -20,6 +20,7 @@ class ConfigReceiver : public QObject
     Q_PROPERTY(QString   watchForCompass READ watchForCompass   WRITE setWatchForCompass   NOTIFY watchForCompassChanged FINAL)
     Q_PROPERTY(QString     watchForSaver READ watchForSaver     WRITE setWatchForSaver     NOTIFY watchForSaverChanged FINAL)
     Q_PROPERTY(QString watchForSmoothing READ watchForSmoothing WRITE setWatchForSmoothing NOTIFY watchForSmoothingChanged FINAL)
+    Q_PROPERTY(QString watchForPitchIdleAngle READ watchForPitchIdleAngle WRITE setWatchForPitchIdleAngle NOTIFY watchForPitchIdleAngleChanged FINAL)
     Q_PROPERTY(QString       videoSource READ videoSource     NOTIFY videoSourceChanged FINAL)
     Q_PROPERTY(int         rotateDisplay READ rotateDisplay   NOTIFY rotateDisplayChanged FINAL)
     Q_PROPERTY(bool        enableCompass READ enableCompass   NOTIFY enableCompassChanged FINAL)
@@ -28,6 +29,7 @@ class ConfigReceiver : public QObject
     Q_PROPERTY(int              fovAngle READ fovAngle        NOTIFY fovAngleChanged FINAL)
     Q_PROPERTY(qreal         stereoShift READ stereoShift     NOTIFY stereoShiftChanged FINAL)
     Q_PROPERTY(double    smoothingFactor READ smoothingFactor NOTIFY smoothingFactorChanged FINAL)
+    Q_PROPERTY(int pitchIdleAngle READ pitchIdleAngle NOTIFY pitchIdleAngleChanged FINAL)
 
 public:
     static constexpr char const *videoSubdir = "player";
@@ -61,6 +63,9 @@ public:
     QString watchForSmoothing() const;
     void setWatchForSmoothing(const QString &path);
 
+    QString watchForPitchIdleAngle() const;
+    void setWatchForPitchIdleAngle(const QString &path);
+
     QString videoSource() const;
     int rotateDisplay() const; // -1/0/1
     bool enableCompass() const;
@@ -69,6 +74,7 @@ public:
     int fovAngle() const;
     qreal stereoShift() const;
     double smoothingFactor() const;
+    int pitchIdleAngle() const;
 
 signals:
     void activeChanged();
@@ -79,12 +85,16 @@ signals:
     void watchForCompassChanged();
     void watchForSaverChanged();
     void watchForSmoothingChanged();
+    void watchForPitchIdleAngleChanged();
+
     void videoSourceChanged();
     void rotateDisplayChanged();
     void enableCompassChanged();
     void screenSaverChanged();
     void adjustAngleChanged();
     void smoothingFactorChanged();
+    void pitchIdleAngleChanged();
+
     void fovAngleChanged();
     void stereoShiftChanged();
     void calibrateRequested();
@@ -100,12 +110,14 @@ private:
     QString m_watchForCompass;
     QString m_watchForSaver;
     QString m_watchForSmoothing;
+    QString m_watchForPitchIdleAngle;
 
     QString m_videoSource;
     int m_rotateDisplay;
     bool m_enableCompass;
     int m_screenSaver;
     double m_smoothingFactor;
+    int m_pitchIdleAngle;
 
     int m_adjustAngle;
     int m_fovAngle;

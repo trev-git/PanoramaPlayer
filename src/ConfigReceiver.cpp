@@ -218,6 +218,30 @@ void ConfigReceiver::setWatchForSmoothing(const QString &path)
     }
 }
 
+QString ConfigReceiver::watchForPitchIdleAngle() const
+{
+    return m_watchForPitchIdleAngle;
+}
+
+void ConfigReceiver::setWatchForPitchIdleAngle(const QString &path)
+{
+    TRACE_ARG(path);
+    if (path.isEmpty() || !QFile::exists(path)) {
+        qWarning() << Q_FUNC_INFO << "The watchForPitchIdleAngle file must exist" << path;
+        return;
+    }
+    if (path != m_watchForPitchIdleAngle) {
+        if (!m_watchForPitchIdleAngle.isEmpty())
+            m_fileWatcher->removePath(m_watchForPitchIdleAngle);
+        if (!m_fileWatcher->addPath(path)) {
+            qWarning() << Q_FUNC_INFO << "Can't watch" << path;
+            return;
+        }
+        m_watchForPitchIdleAngle = path;
+        emit watchForPitchIdleAngleChanged();
+    }
+}
+
 QString ConfigReceiver::videoSource() const
 {
     return m_videoSource;
@@ -258,6 +282,11 @@ qreal ConfigReceiver::smoothingFactor() const
     return m_smoothingFactor;
 }
 
+int ConfigReceiver::pitchIdleAngle() const
+{
+    return m_pitchIdleAngle;
+}
+
 void ConfigReceiver::onFileWatcher(const QString &path)
 {
     TRACE_ARG(path);
@@ -267,6 +296,8 @@ void ConfigReceiver::onFileWatcher(const QString &path)
     bool compass   = (path == m_watchForCompass);
     bool saver     = (path == m_watchForSaver);
     bool smoothing = (path == m_watchForSmoothing);
+    bool pitchIdleAngle = (path == m_watchForPitchIdleAngle);
+
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly) || file.size() < 1) {
         if (video && !m_videoSource.isEmpty()) {
@@ -291,6 +322,11 @@ void ConfigReceiver::onFileWatcher(const QString &path)
         }
         if (smoothing && m_smoothingFactor) {
             m_smoothingFactor = 0;
+            emit smoothingFactorChanged();
+        }
+        if (pitchIdleAngle && m_pitchIdleAngle) {
+            m_pitchIdleAngle = 0;
+            emit pitchIdleAngleChanged();
         }
         return;
     }
@@ -338,7 +374,14 @@ void ConfigReceiver::onFileWatcher(const QString &path)
         }
         return;
     }
-    
+    if (pitchIdleAngle) {
+        int degree = qBound(-90, num, 90);
+        if (degree != m_pitchIdleAngle) {
+            m_pitchIdleAngle = degree;
+            emit pitchIdleAngleChanged();
+        }
+    }
+
     // Floating-point values next
     double decimal = value.toDouble();
     if (smoothing) {
@@ -368,6 +411,7 @@ void ConfigReceiver::onActiveTimer()
     onFileWatcher(m_watchForVideo);
     onFileWatcher(m_watchForSaver);
     onFileWatcher(m_watchForSmoothing);
+    onFileWatcher(m_watchForPitchIdleAngle);
 
     QSettings settings;
     int num = settings.value("AdjustAngle", 0).toInt();

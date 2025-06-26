@@ -9,12 +9,13 @@ PanoramaView {
     debugOpenGL: appDebugOpenGL
 
     readonly property string runIdleCommand: "backlight"
-    readonly property int pitchIdleAngle: 20
+    
 
     readonly property string cmdFullPath: StandardPaths.findExecutable(runIdleCommand).toString()
     readonly property var appWindow: Window.window
 
     Component.onCompleted: {
+        // console.log('pitchIdleAngle: ', pitchIdleAngle)
         if (!cmdFullPath && !errorLabel.text)
             errorLabel.text = qsTr("Can't find executable <b>%1</b> in the system PATH").arg(runIdleCommand)
     }
@@ -84,6 +85,7 @@ PanoramaView {
     }
 
     onPitchAngleChanged: {
+        console.log(pitchIdleAngle)
         if (pitchAngle < pitchIdleAngle && !panoramaPlayer.isPlaying() &&
                 panoramaPlayer.mediaState !== PanoramaPlayer.MediaUnknown) {
             idleTimer.stop()
@@ -124,6 +126,7 @@ PanoramaView {
         watchForCompass:   "/srv/http/compass.txt"
         watchForSaver:     "/srv/http/screensaver.txt"
         watchForSmoothing: "/srv/http/smoothing.txt"
+        watchForPitchIdleAngle: "/srv/http/pitch_idle_angle.txt"
         onCalibrateRequested: {
             serialSensor.startCalibrate();
         }
@@ -131,7 +134,7 @@ PanoramaView {
     rotateDisplay: configReceiver.rotateDisplay
     stereoShift: configReceiver.stereoShift
     fovAngle: configReceiver.fovAngle
-
+    readonly property int pitchIdleAngle: configReceiver.pitchIdleAngle
     readonly property int rotateImage: rotateDisplay < 0 ? 270 : 90 * rotateDisplay
 
     Image {
